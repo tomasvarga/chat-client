@@ -1,0 +1,11 @@
+const COLORS = {
+  WHITE: '#FFFFFF',
+  WILDSAND: '#F5F5F5',
+  GRAY: '#A89D9A',
+  ROMANTIC: '#FED8BC',
+  ORANGE: '#DA5138',
+  DARKORANGE: '#C1452E',
+  APPLEBLOSSOM: '#af5c45',
+};
+
+export default COLORS;
