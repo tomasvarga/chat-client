@@ -13,7 +13,10 @@ const ContactsList = ({ contacts, userId }) => (
 );
 
 ContactsList.propTypes = {
-  contacts: PropTypes.instanceOf(Array).isRequired,
+  contacts: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    userId: PropTypes.number.isRequired,
+  })).isRequired,
   userId: PropTypes.number.isRequired,
 };
 

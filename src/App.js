@@ -2,15 +2,28 @@ import React, { Component } from 'react';
 import Client from './components/Client';
 import GlobalStyle from './global/style';
 import Chat from './components/Chat';
-import Panel from './components/LeftPanel';
-import Dummy from './Dummy';
+import LeftPanel from './components/LeftPanel';
+import DUMMYDATA from './constants/DummyData';
 
 class App extends Component {
   state = {
-    userId: 1,
-    data: Dummy.Data,
+    userId: null,
+    messages: [],
     text: '',
-    contacts: Dummy.Contacts,
+    contacts: [],
+    loading: true,
+  }
+
+  componentDidMount() {
+    const promise = new Promise(resolve => setTimeout(resolve, 1000));
+    promise.then(() => {
+      this.setState({
+        messages: DUMMYDATA.MESSAGES,
+        contacts: DUMMYDATA.CONTACTS,
+        loading: false,
+        userId: 1,
+      });
+    });
   }
 
   getLoadingText = () => {
@@ -29,29 +42,14 @@ class App extends Component {
   }
 
   addNewMessage = (text) => {
-    const { userId, data } = this.state;
+    const { userId, messages } = this.state;
     if (!text) {
       return null;
     }
-    const lastId = data.length - 1;
-    const newId = (lastId + 1);
+    const newId = messages.length;
     const newMessage = { id: newId, userId, text };
-    this.setState({ data: [...data, newMessage], text: '' });
+    this.setState({ messages: [...messages, newMessage], text: '' });
     return null;
-  }
-
-  handleEnterKeyPress = (event) => {
-    if (event.key !== 'Enter') {
-      return null;
-    }
-    const text = event.target.value;
-    this.addNewMessage(text);
-    return null;
-  }
-
-  handleSendButtonPress = (event) => {
-    const text = event.target.value;
-    this.addNewMessage(text);
   }
 
   handleKeysPress = (event) => {
@@ -59,22 +57,31 @@ class App extends Component {
     this.setState({ text: newText });
   }
 
+  handleSubmitMessage = (event) => {
+    const text = event.target.value;
+    this.addNewMessage(text);
+  }
+
   render() {
     const {
-      data, userId, text, contacts,
+      messages, userId, text, contacts, loading,
     } = this.state;
     return (
       <Client>
         <GlobalStyle />
-        <Panel contacts={contacts} userId={userId} />
+        <LeftPanel
+          contacts={contacts}
+          userId={userId}
+          loading={loading}
+        />
         <Chat
-          data={data}
+          messages={messages}
           userId={userId}
           text={text}
+          loading={loading}
           loadingText={this.getLoadingText()}
           handleKeysPress={this.handleKeysPress}
-          handleSendButtonPress={this.handleSendButtonPress}
-          handleEnterKeyPress={this.handleEnterKeyPress}
+          handleSubmitMessage={this.handleSubmitMessage}
         />
       </Client>
     );

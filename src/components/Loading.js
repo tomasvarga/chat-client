@@ -7,19 +7,12 @@ const Loading = styled.div`
     opacity: 0.9;
     position: absolute;
     top: 0px;
-    width: 80%;
+    width: 100%;
     min-height: 100vh;
     font-size: 2em;
     text-align: center;
     line-height: 100vh;
     color: ${COLORS.APPLEBLOSSOM};
-    animation: fadeOut2 1s;
-    visibility: hidden;
-
-    @keyframes fadeOut2 {
-        99% {visibility: visible;}
-        100% {visibility: hidden;}
-    }
 `;
 
 export default Loading;

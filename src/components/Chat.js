@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Bubble from './Bubble';
 import ChatUI from './ChatUI';
-import FakeLoading from './Loading';
+import Loading from './Loading';
 
 class Chat extends Component {
   messagesEnd = React.createRef();
@@ -21,13 +21,13 @@ class Chat extends Component {
 
   render() {
     const {
-      data, userId, text, handleSendButtonPress, handleEnterKeyPress, handleKeysPress, loadingText,
+      messages, userId, text, handleSubmitMessage, handleKeysPress, loadingText, loading,
     } = this.props;
     return (
       <ChatUI.Container>
-        <FakeLoading>{loadingText}</FakeLoading>
+        {(loading) && <Loading>{loadingText}</Loading>}
         <ChatUI.MessageBubbles>
-          {(data) && data.map(message => ((message.userId === userId)
+          {(messages) && messages.map(message => ((message.userId === userId)
             ? <Bubble.Gray key={message.id}>{message.text}</Bubble.Gray>
             : <Bubble.Orange key={message.id}>{message.text}</Bubble.Orange>
           ))}
@@ -35,8 +35,7 @@ class Chat extends Component {
         </ChatUI.MessageBubbles>
         <ChatUI.NewMessageBar
           text={text}
-          onClick={handleSendButtonPress}
-          onPressEnter={handleEnterKeyPress}
+          onSubmitMessage={handleSubmitMessage}
           onChange={handleKeysPress}
         />
       </ChatUI.Container>
@@ -44,18 +43,21 @@ class Chat extends Component {
   }
 }
 
-Chat.propTypes = {
-  data: PropTypes.instanceOf(Array).isRequired,
-  userId: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-  handleSendButtonPress: PropTypes.func.isRequired,
-  handleEnterKeyPress: PropTypes.func.isRequired,
-  handleKeysPress: PropTypes.func.isRequired,
-  loadingText: PropTypes.string,
-};
-
 Chat.defaultProps = {
   loadingText: 'Loading...',
+};
+
+Chat.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    text: PropTypes.string.isRequired,
+  })).isRequired,
+  userId: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+  handleSubmitMessage: PropTypes.func.isRequired,
+  handleKeysPress: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  loadingText: PropTypes.string,
 };
 
 export default Chat;
