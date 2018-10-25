@@ -4,9 +4,9 @@ import ContactsList from './ContactsList';
 import Panel from './Panel';
 import Loading from './Loading';
 
-const LeftPanel = ({ contacts, userId, loading }) => (
+const LeftPanel = ({ contacts, userId, isLoading }) => (
   <Panel.Container>
-    {(loading) && <Loading /> }
+    {isLoading && <Loading.Panel />}
     <Panel.Title>Contacts</Panel.Title>
     <ContactsList contacts={contacts} userId={userId} />
   </Panel.Container>
@@ -18,7 +18,7 @@ LeftPanel.propTypes = {
     userId: PropTypes.number.isRequired,
   })).isRequired,
   userId: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default LeftPanel;

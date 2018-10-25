@@ -7,11 +7,11 @@ import DUMMYDATA from './constants/DummyData';
 
 class App extends Component {
   state = {
-    userId: null,
+    userId: -1,
     messages: [],
     text: '',
     contacts: [],
-    loading: true,
+    isLoading: true,
   }
 
   componentDidMount() {
@@ -20,7 +20,7 @@ class App extends Component {
       this.setState({
         messages: DUMMYDATA.MESSAGES,
         contacts: DUMMYDATA.CONTACTS,
-        loading: false,
+        isLoading: false,
         userId: 1,
       });
     });
@@ -41,30 +41,22 @@ class App extends Component {
     return 'Well, hello sleepy.';
   }
 
-  addNewMessage = (text) => {
-    const { userId, messages } = this.state;
-    if (!text) {
-      return null;
+  handleKeysPress = (value) => {
+    this.setState({ text: value });
+  }
+
+  handleSubmitMessage = (value) => {
+    if (value) {
+      const { userId, messages } = this.state;
+      const newId = messages.length;
+      const newMessage = { id: newId, userId, text: value };
+      this.setState({ messages: [...messages, newMessage], text: '' });
     }
-    const newId = messages.length;
-    const newMessage = { id: newId, userId, text };
-    this.setState({ messages: [...messages, newMessage], text: '' });
-    return null;
-  }
-
-  handleKeysPress = (event) => {
-    const newText = event.target.value;
-    this.setState({ text: newText });
-  }
-
-  handleSubmitMessage = (event) => {
-    const text = event.target.value;
-    this.addNewMessage(text);
   }
 
   render() {
     const {
-      messages, userId, text, contacts, loading,
+      messages, userId, text, contacts, isLoading,
     } = this.state;
     return (
       <Client>
@@ -72,13 +64,13 @@ class App extends Component {
         <LeftPanel
           contacts={contacts}
           userId={userId}
-          loading={loading}
+          isLoading={isLoading}
         />
         <Chat
           messages={messages}
           userId={userId}
           text={text}
-          loading={loading}
+          isLoading={isLoading}
           loadingText={this.getLoadingText()}
           handleKeysPress={this.handleKeysPress}
           handleSubmitMessage={this.handleSubmitMessage}

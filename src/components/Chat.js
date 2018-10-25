@@ -21,11 +21,11 @@ class Chat extends Component {
 
   render() {
     const {
-      messages, userId, text, handleSubmitMessage, handleKeysPress, loadingText, loading,
+      messages, userId, text, handleSubmitMessage, handleKeysPress, loadingText, isLoading,
     } = this.props;
     return (
       <ChatUI.Container>
-        {(loading) && <Loading>{loadingText}</Loading>}
+        {isLoading && <Loading.Chat>{loadingText}</Loading.Chat>}
         <ChatUI.MessageBubbles>
           {(messages) && messages.map(message => ((message.userId === userId)
             ? <Bubble.Gray key={message.id}>{message.text}</Bubble.Gray>
@@ -56,7 +56,7 @@ Chat.propTypes = {
   text: PropTypes.string.isRequired,
   handleSubmitMessage: PropTypes.func.isRequired,
   handleKeysPress: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   loadingText: PropTypes.string,
 };
 
