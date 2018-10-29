@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NewMessageBar from './NewMessageBar';
 
-const onEnterKeyPress = (key, value, onSubmit) => {
+const onEnterKeyPress = (key, value, onSubmitMessage) => {
   if (key === 'Enter') {
-    onSubmit(value);
+    onSubmitMessage(value);
   }
 };
 
@@ -15,8 +15,8 @@ const ChatMessageBar = ({
     <NewMessageBar.Input
       autoFocus
       value={text}
-      onKeyPress={e => onEnterKeyPress(e.key, e.target.value, onSubmitMessage)}
-      onChange={e => onChange(e.target.value)}
+      onKeyPress={e => onEnterKeyPress({ key: e.key, value: e.target.value, onSubmitMessage })}
+      onChange={e => onChange({ value: e.target.value })}
       placeholder="Enter text..."
     />
     <NewMessageBar.Button
